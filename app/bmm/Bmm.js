@@ -29,7 +29,7 @@ export default class Bmm extends Component {
         return (
             <View style={styles.container}>
                 <StatusBar
-                    backgroundColor={this.state.theme.color}
+                    backgroundColor={this.state.theme.navBackgroundColor}
                     barStyle="light-content"
                 />
                 <View style={[styles.header, this.state.theme.header]}>
@@ -45,13 +45,13 @@ export default class Bmm extends Component {
                         right: 40,
                         bottom: 0,
                     }}>
-                        <Text style={styles.headerTitle}>书影音</Text>
+                        <Text style={[styles.headerTitle, this.state.theme.headerTitle]}>书影音</Text>
                     </View>
                     <View style={{alignItems: 'center', padding: 10}}>
                         <TouchableOpacity onPress={() => {
                             alert('聊天')
                         }}>
-                            <Icon name="md-chatbubbles" size={22} color="white"/>
+                            <Icon name="md-chatbubbles" size={22} color={this.state.theme.headerIconColor}/>
                         </TouchableOpacity>
                     </View>
                 </View>

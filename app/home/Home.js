@@ -35,10 +35,10 @@ export default class Home extends Component {
         return (
             <View style={styles.container}>
                 <StatusBar
-                    backgroundColor={this.state.theme.color}
+                    backgroundColor={'#4caf50'}
                     barStyle="light-content"
                 />
-                <View style={[styles.header, this.state.theme.header]}>
+                <View style={[styles.header, {backgroundColor: '#4caf50'}]}>
                     <View style={styles.headerTextInput}>
                         <Icon name="md-search" size={22} color="gray" style={{marginLeft: 10}} onPress={() => {
                             this.props.navigator.push({
@@ -49,14 +49,13 @@ export default class Home extends Component {
                                 },
                             });
                         }}/>
-                        <Text style={{
+                        <Text style={[{
                             alignItems: 'flex-start',
                             // backgroundColor: 'red',
                             position: 'absolute',
                             left: 40,
                             right: 40,
-                            color: '#ccc'
-                        }} onPress={() => {
+                        }, this.state.theme.headerText]} onPress={() => {
                             this.props.navigator.push({
                                 component: Search,
                                 params: {

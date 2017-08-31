@@ -9,11 +9,20 @@ import {
 import TabBar from '../components/TabBar';
 
 const theme = {
-    color: '#4F8EF7',
-    color2: '#4caf50',
-    header: {
-        backgroundColor: '#4F8EF7'
-    }
+    // color: '#4F8EF7',
+    color: '#4caf50',
+    navBackgroundColor: '#fff',
+    viewBackgroundColor: '#eee',
+    header: {//样式对象
+        backgroundColor: '#fff',
+    },
+    headerTitle: {
+        fontSize: 18,
+        // fontWeight: '900',
+        color: '#000',
+        alignItems: 'center'
+    },
+    headerIconColor: '#4caf50'
 }
 
 export default class Main extends Component {

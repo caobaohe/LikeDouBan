@@ -31,13 +31,13 @@ export default class TabBar extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedTab: 'home',
+            selectedTab: 'my',
             theme: this.props.theme
         }
     }
 
     componentWillMount() {
-        const {color, normalColor} = this.props;
+        // const {color, normalColor} = this.props;
     }
 
     render() {
