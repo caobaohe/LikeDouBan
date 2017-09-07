@@ -26,7 +26,8 @@ export default class Setup extends Component {
                 renderScene={(route, navigator) => {
                     let Component = route.component;
                     return <Component {...route.params} navigator={navigator}/>
-                }}/>
+                }}
+                configureScene={(route, routeStack) => Navigator.SceneConfigs.PushFromRight}/>
         );
     }
 }

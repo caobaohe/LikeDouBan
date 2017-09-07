@@ -31,7 +31,7 @@ export default class TabBar extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedTab: 'my',
+            selectedTab: 'home',
             theme: this.props.theme
         }
     }

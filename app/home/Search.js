@@ -18,14 +18,30 @@ import {
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import BackComponent from '../components/BackComponent';
+
 export default class Search extends Component {
 
     constructor(props) {
         super(props);
+        this.backComponent = new BackComponent({...props, onHardwareBackPress: (e) => this.onHardwareBackPress(e)});
         this.state = {
             theme: this.props.theme,
             searchScope: 0
         };
+    }
+
+    onHardwareBackPress() {//android点击返回键
+        this.props.navigator.pop();
+        return true;
+    }
+
+    componentDidMount() {
+        this.backComponent.componentDidMount();
+    }
+
+    componentWillUnMount() {
+        this.backComponent.componentWillUnmount();
     }
 
     render() {
@@ -35,7 +51,7 @@ export default class Search extends Component {
                     backgroundColor={this.state.theme.color}
                     barStyle="light-content"
                 />
-                <View style={[styles.header, this.state.theme.header]}>
+                <View style={[styles.header, {backgroundColor: '#4caf50'}]}>
                     <View>
                         <Picker mode="dropdown" style={{width: 80, color: 'white'}}
                                 selectedValue={this.state.searchScope}
@@ -56,7 +72,7 @@ export default class Search extends Component {
                     </TextInput>
                     <View style={{alignItems: 'center', padding: 10}}>
                         <TouchableOpacity onPress={() => {
-                            alert('聊天')
+                            this.props.navigator.pop();
                         }}>
                             <Text>取消</Text>
                         </TouchableOpacity>
