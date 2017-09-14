@@ -17,20 +17,25 @@ import {
     Image,
     Dimensions,
     ActivityIndicator,
-    Share
+    Share,
+    Modal
 } from 'react-native';
 
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
-import BackComponent from '../components/BackComponent';
-import NavBar from '../components/NavBar';
-import CollapsibleText from '../components/CollapsibleText';
+import BackComponent from './BackComponent';
+import NavBar from './NavBar';
+import CollapsibleText from './CollapsibleText';
 
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 var movie;
 var posterDesc;
+
+let loadCount = 0;//第一次加载
+let image = [];
 export default class MovieDetail extends Component {
 
     constructor(props) {
@@ -38,7 +43,9 @@ export default class MovieDetail extends Component {
         this.backComponent = new BackComponent({...props, onHardwareBackPress: (e) => this.onHardwareBackPress(e)});
         this.state = {
             theme: this.props.theme,
-            loading: true
+            loading: true,
+            modalVisible: false,//是否显示查看大图的modal
+            images: []//查看大图的图片集合
         };
         this._fetchData(`https://api.douban.com/v2/movie/subject/${this.props.movie.id}`);
     }
@@ -68,33 +75,60 @@ export default class MovieDetail extends Component {
     }
 
     componentDidMount() {
+        console.log("componentDidMount");
+        loadCount = 0;//第一次加载
+        image = [];
         this.backComponent.componentDidMount();
     }
 
     componentWillUnMount() {
+        console.log("componentWillUnMount");
+        loadCount = 0;//第一次加载
+        image = [];
         this.backComponent.componentWillUnmount();
     }
 
+    shouldComponentUpdate() {
+        return true;
+    }
+
     _renderFilmmaker(casts, type) {
+        loadCount++;
+        console.log("_renderFilmmaker：" + loadCount);
         let result = [];
         for (let i = 0; i < casts.length; i++) {
-            result.push(<View key={casts[i].id} style={{width: 70, marginRight: 10}}>
-                <Image source={{uri: casts[i].avatars.large}} style={{width: 70, height: 100}}/>
-                <Text numberOfLines={1} style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    textAlign: 'center'
-                }}>{casts[i].name}</Text>
-                {type == 0 ?
-                    <Text numberOfLines={1} style={{
-                        alignItems: 'center', justifyContent: 'center',
-                        textAlign: 'center'
-                    }}>导演</Text> :
-                    <Text numberOfLines={1} style={{
-                        alignItems: 'center', justifyContent: 'center',
-                        textAlign: 'center'
-                    }}>演员</Text>}
-            </View>);
+            if (loadCount < 3) {
+                this.state.images.push({url: casts[i].avatars.large});
+                image.push(casts[i]);
+            }
+            console.log(image.indexOf(casts[i]));
+            result.push(
+                <TouchableOpacity key={casts[i].id} onPress={() => {
+                    let index = image.indexOf(casts[i]);
+                    this.setState({
+                        imageIndex: index,
+                        modalVisible: true,
+                    });
+                }}>
+                    <View key={casts[i].id} style={{width: 70, marginRight: 10}}>
+                        <Image source={{uri: casts[i].avatars.large}} style={{width: 70, height: 100}}/>
+                        <Text numberOfLines={1} style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            textAlign: 'center'
+                        }}>{casts[i].name}</Text>
+                        {type == 0 ?
+                            <Text numberOfLines={1} style={{
+                                alignItems: 'center', justifyContent: 'center',
+                                textAlign: 'center'
+                            }}>导演</Text> :
+                            <Text numberOfLines={1} style={{
+                                alignItems: 'center', justifyContent: 'center',
+                                textAlign: 'center'
+                            }}>演员</Text>}
+                    </View>
+                </TouchableOpacity>
+            );
         }
         return result;
     }
@@ -172,11 +206,25 @@ export default class MovieDetail extends Component {
                                 <CollapsibleText numberOfLines={4} style={{fontSize: 16, color: '#333'}}
                                                  expandTextStyle={{color: this.props.theme.color}}>暂无信息</CollapsibleText>
                                 <Text style={{marginTop: 10, marginBottom: 10}}>获奖记录</Text>
-                                <CollapsibleText numberOfLines={4} style={{fontSize: 16, color: '#333'}}
-                                                 expandTextStyle={{color: this.props.theme.color}}>暂无信息</CollapsibleText>
+                                <TouchableOpacity onPress={() => {
+                                    this.setState({
+                                        modalVisible: true
+                                    });
+                                }}>
+                                    <CollapsibleText numberOfLines={4} style={{fontSize: 16, color: '#333'}}
+                                                     expandTextStyle={{color: this.props.theme.color}}>暂无信息</CollapsibleText>
+                                </TouchableOpacity>
                             </View>
                         </ScrollView>
                 }
+                <Modal visible={this.state.modalVisible} transparent={true} onRequestClose={() => {
+                    this.setState({
+                        modalVisible: false
+                    });
+                }}>
+                    <ImageViewer imageUrls={this.state.images}
+                                 index={this.state.imageIndex}/>
+                </Modal>
             </View>
         );
     }

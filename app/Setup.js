@@ -27,7 +27,11 @@ export default class Setup extends Component {
                     let Component = route.component;
                     return <Component {...route.params} navigator={navigator}/>
                 }}
-                configureScene={(route, routeStack) => Navigator.SceneConfigs.PushFromRight}/>
+                //configureScene={(route, routeStack) => Navigator.SceneConfigs.PushFromRight}
+                configureScene={
+                    (route, routeStack) => Navigator.SceneConfigs.FadeAndroid
+                }
+            />
         );
     }
 }

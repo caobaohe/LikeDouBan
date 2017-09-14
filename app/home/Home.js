@@ -4,7 +4,6 @@
 
 import React, {Component} from 'react';
 import {
-    AppRegistry,
     StyleSheet,
     Text,
     View,
@@ -25,7 +24,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import Search from './Search';
-import MovieDetail from "./MovieDetail";
+import MovieDetail from "../components/MovieDetail";
 
 
 let start = 0;
@@ -77,7 +76,7 @@ export default class Home extends Component {
             directors += rowData.directors[d].name;
         }
         return (
-            <TouchableHighlight onPress={() => {
+            <TouchableOpacity onPress={() => {
                 this.props.navigator.push({
                     component: MovieDetail,
                     params: {
@@ -86,7 +85,7 @@ export default class Home extends Component {
                         ...this.props,
                     }
                 });
-            }} underlayColor="#eee">
+            }}>
                 <View style={{
                     flexDirection: 'row',
                     padding: 10,
@@ -121,7 +120,7 @@ export default class Home extends Component {
                         <Text>演员：{casts}</Text>
                     </View>
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         );
     }
 
@@ -146,6 +145,7 @@ export default class Home extends Component {
                     barStyle="light-content"
                 />
                 <View style={[styles.header, {backgroundColor: '#4caf50'}]}>
+
                     <View style={styles.headerTextInput}>
                         <Icon name="md-search" size={22} color="gray" style={{marginLeft: 10}} onPress={() => {
                             this.props.navigator.push({
@@ -192,7 +192,7 @@ export default class Home extends Component {
                             renderRow={this._renderRow.bind(this)}
                             refreshControl={
                                 <RefreshControl
-                                    colors = {[this.props.theme.color]}
+                                    colors={[this.props.theme.color]}
                                     refreshing={this.state.refreshing}
                                     onRefresh={this._onRefresh.bind(this)}
                                 />

@@ -62,7 +62,7 @@ export default class My extends Component {
                     </View>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}
-                            indicatorStyle="white" style={{}} endFillColor="#00ff00">
+                            style={{}} endFillColor="#000" pressColor="#000">
                     < View style={styles.profile}>
                         <Image source={require('../images/ic_my_default_male_bg.webp')}
                                style={[styles.backgroundImage, styles.profile]}>

@@ -27,7 +27,8 @@ export default class Search extends Component {
         this.backComponent = new BackComponent({...props, onHardwareBackPress: (e) => this.onHardwareBackPress(e)});
         this.state = {
             theme: this.props.theme,
-            searchScope: 0
+            searchScope: 0,
+            searchState: false//是否可以搜索
         };
     }
 
@@ -42,6 +43,13 @@ export default class Search extends Component {
 
     componentWillUnMount() {
         this.backComponent.componentWillUnmount();
+    }
+
+    _onChangeText(text) {
+        console.log(text)
+        this.setState({
+            searchState: text ? true : false
+        });
     }
 
     render() {
@@ -68,18 +76,19 @@ export default class Search extends Component {
                     <TextInput style={styles.headerTextInput}
                                underlineColorAndroid="transparent"
                                placeholder="搜索"
-                               placeholderTextColor="#ccc">
+                               placeholderTextColor="#ccc"
+                               onChangeText={(text) => this._onChangeText}>
                     </TextInput>
                     <View style={{alignItems: 'center', padding: 10}}>
                         <TouchableOpacity onPress={() => {
                             this.props.navigator.pop();
                         }}>
-                            <Text>取消</Text>
+                            <Text>{this.state.searchState ? '搜索' : '取消'}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <Text style={styles.welcome}>
-                    搜索
+                    {this.state.searchState ? '搜索' : '取消'}
                 </Text>
             </View>
         );
@@ -108,6 +117,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     headerTextInput: {
+        justifyContent: 'center',
+        alignItems: 'center',
         flex: 1,
         height: (Platform.OS === 'ios') ? 30 : 40,
         borderColor: 'white',
