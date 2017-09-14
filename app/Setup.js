@@ -21,8 +21,8 @@ export default class Setup extends Component {
     render() {
         return (
             <Navigator
-                // initialRoute={{component: Welcome}}
-                initialRoute={{component: Main}}
+                initialRoute={{component: Welcome}}
+                //initialRoute={{component: Main}}
                 renderScene={(route, navigator) => {
                     let Component = route.component;
                     return <Component {...route.params} navigator={navigator}/>
